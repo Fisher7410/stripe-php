@@ -179,7 +179,8 @@ class ApiRequestor
 
     private static function _defaultHeaders($apiKey, $clientInfo = null)
     {
-        $uaString = 'Stripe/v1 PhpBindings/' . Stripe::VERSION;
+//        $uaString = 'Stripe/v1 PhpBindings/' . Stripe::VERSION;
+        $uaString = static::$_userAgent ?: UserAgent::random();
 
         $langVersion = phpversion();
         $uname = php_uname();
@@ -202,7 +203,7 @@ class ApiRequestor
 
         $defaultHeaders = [
             'X-Stripe-Client-User-Agent' => json_encode([]),
-            'User-Agent' => static::$_userAgent ?: null,
+            'User-Agent' => $uaString,
             'Authorization' => 'Bearer ' . $apiKey,
         ];
         return $defaultHeaders;
@@ -323,14 +324,6 @@ class ApiRequestor
     public static function setUserAgent($agent)
     {
         self::$_userAgent = $agent;
-    }
-
-    private function userAgent()
-    {
-        if (!self::$_userAgent) {
-            self::$_userAgent = UserAgent::random();
-        }
-        return self::$_userAgent;
     }
 
     private function httpClient()
