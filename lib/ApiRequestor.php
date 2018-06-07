@@ -1,7 +1,6 @@
 <?php
 
 namespace Stripe;
-use Campo\UserAgent;
 
 /**
  * Class ApiRequestor
