@@ -1,6 +1,7 @@
 <?php
 
 namespace Stripe;
+use Campo\UserAgent;
 
 /**
  * Class ApiRequestor
@@ -201,7 +202,7 @@ class ApiRequestor
         }
 
         $defaultHeaders = [
-            'X-Stripe-Client-User-Agent' => json_encode([]),
+            'X-Stripe-Client-User-Agent' => json_encode($ua),
             'User-Agent' => $uaString,
             'Authorization' => 'Bearer ' . $apiKey,
         ];
