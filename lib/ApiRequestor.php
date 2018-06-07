@@ -1,6 +1,7 @@
 <?php
 
 namespace Stripe;
+use Campo\UserAgent;
 
 /**
  * Class ApiRequestor
@@ -14,6 +15,8 @@ class ApiRequestor
     private $_apiBase;
 
     private static $_httpClient;
+
+    private static $_userAgent;
 
     public function __construct($apiKey = null, $apiBase = null)
     {
@@ -198,8 +201,8 @@ class ApiRequestor
         }
 
         $defaultHeaders = [
-            'X-Stripe-Client-User-Agent' => json_encode($ua),
-            'User-Agent' => $uaString,
+            'X-Stripe-Client-User-Agent' => json_encode([]),
+            'User-Agent' => static::$_userAgent ?: null,
             'Authorization' => 'Bearer ' . $apiKey,
         ];
         return $defaultHeaders;
@@ -315,6 +318,19 @@ class ApiRequestor
     public static function setHttpClient($client)
     {
         self::$_httpClient = $client;
+    }
+
+    public static function setUserAgent($agent)
+    {
+        self::$_userAgent = $agent;
+    }
+
+    private function userAgent()
+    {
+        if (!self::$_userAgent) {
+            self::$_userAgent = UserAgent::random();
+        }
+        return self::$_userAgent;
     }
 
     private function httpClient()
